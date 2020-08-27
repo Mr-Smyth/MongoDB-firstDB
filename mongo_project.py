@@ -40,7 +40,9 @@ def get_record():
 
     print("")
     first = input("Enter first name > ")
-    last = input("Enter last name")
+    last = input("Enter last name > ")
+    first = first.strip(" ")
+    last = last.strip(" ")
 
     # try to search for name and handle any errors
     try:
@@ -92,6 +94,16 @@ def add_record():
         print("An error has occured accessing the database")
 
 
+def find_record():
+    doc = get_record()
+    if doc:
+        print("")
+        for key, value in doc.items():
+            if key != "_id":
+                print(key.capitalize() + ": " + value.capitalize())
+
+
+
 def main_loop():
 
     # MAIN LOOP-
@@ -103,7 +115,7 @@ def main_loop():
         if option == "1":
             add_record()
         elif option == "2":
-            print("You have selected option 2")
+            find_record()
         elif option == "3":
             print("You have selected option 3")
         elif option == "4":
