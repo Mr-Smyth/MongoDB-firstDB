@@ -32,6 +32,42 @@ def show_menu():
     return option
 
 
+def add_record():
+
+    # This functions handles option 1. Add a record.
+    # It collects the data from the user
+    # it creates a dictionary of the key: value pairs
+    # It inserts to Mongo DB 
+
+    print("")
+    first = input("Enter first name > ")
+    last = input("Enter last name > ")
+    dob = input("Enter their date of birth > ")
+    gender = input("Enter their gender > ")
+    hair_colour = input("Enter their hair colour > ")
+    occupation = input("Enter their occupation > ")
+    nationality = input("Enter their nationality > ")
+
+    # insert the inputs into a dictionary, to prep for insertion.
+    new_doc = {
+        "first": first.lower(),
+        "last": last.lower(),
+        "dob": dob.lower(),
+        "gender": gender.lower(),
+        "hair_colour": hair_colour.lower(),
+        "occupation": occupation.lower(),
+        "nationality": nationality.lower()
+    }
+
+    # try to insert the data and handle errors
+    try:
+        coll.insert(new_doc)
+        print("")
+        print("Document inserted")
+    except:
+        print("An error has occured accessing the database")
+
+
 def main_loop():
 
     # MAIN LOOP-
@@ -41,7 +77,7 @@ def main_loop():
     while True:
         option = show_menu()
         if option == "1":
-            print("You have selected option 1")
+            add_record()
         elif option == "2":
             print("You have selected option 2")
         elif option == "3":
