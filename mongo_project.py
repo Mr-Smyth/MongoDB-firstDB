@@ -95,6 +95,9 @@ def add_record():
 
 
 def find_record():
+
+    # Fuction to find and display a users record
+
     doc = get_record()
     if doc:
         print("")
@@ -102,6 +105,42 @@ def find_record():
             if key != "_id":
                 print(key.capitalize() + ": " + value.capitalize())
 
+
+def edit_record():
+
+    # Function that gets the required record then
+    # Then iterates over it, giving the user an 
+    # option to change any particular field
+
+    doc = get_record()
+    if doc:
+        update_doc = {}
+        print("")
+        # for each key,value pair
+        for key, value in doc.items():
+            # check iteration is not on the secret id
+            if key != "_id":
+                # Then display the current key and value,
+                # and allow user to change value
+                update_doc[key] = input(
+                    key.capitalize(
+                    ) + " [" + value + "] (press enter to skip..) >")
+
+                # set input to lowercase and strip any unwanted whitespace
+                update_doc[key] = update_doc[key].lower()
+                update_doc[key] = update_doc[key].strip(" ")
+
+                # If field has not changed, set the key to the original value
+                if update_doc[key] == "":
+                    update_doc[key] = value
+
+        # try and insert into Mongo DB and handle any error
+        try:
+            coll.update_one(doc, {"$set": update_doc})
+            print("")
+            print("Document updated successfully!")
+        except:
+            print("Error accessing the database")
 
 
 def main_loop():
@@ -117,7 +156,7 @@ def main_loop():
         elif option == "2":
             find_record()
         elif option == "3":
-            print("You have selected option 3")
+            edit_record()
         elif option == "4":
             print("You have selected option 4")
         elif option == "5":
