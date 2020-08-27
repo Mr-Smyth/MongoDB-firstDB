@@ -32,12 +32,36 @@ def show_menu():
     return option
 
 
+def get_record():
+
+    # This is a helper function to assist in the searches
+    # That will need to be done in finding, editing and deleting
+    # Records
+
+    print("")
+    first = input("Enter first name > ")
+    last = input("Enter last name")
+
+    # try to search for name and handle any errors
+    try:
+        doc = coll.find_one({"first": first.lower(), "last": last.lower()})
+    except:
+        print("An error has occured accessing the database")
+
+    # if no documents are found
+    if not doc:
+        print("")
+        print("Sorry, but no documents matching your criteria were found")
+
+    return doc
+
+
 def add_record():
 
     # This functions handles option 1. Add a record.
     # It collects the data from the user
     # it creates a dictionary of the key: value pairs
-    # It inserts to Mongo DB 
+    # It inserts to Mongo DB
 
     print("")
     first = input("Enter first name > ")
@@ -48,7 +72,7 @@ def add_record():
     occupation = input("Enter their occupation > ")
     nationality = input("Enter their nationality > ")
 
-    # insert the inputs into a dictionary, to prep for insertion.
+    # Insert the inputs into a dictionary, to prep for insertion.
     new_doc = {
         "first": first.lower(),
         "last": last.lower(),
