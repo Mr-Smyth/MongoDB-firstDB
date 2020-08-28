@@ -1,4 +1,5 @@
 import os
+from os import system, name
 import pymongo
 
 if os.path.exists("env.py"):
@@ -26,7 +27,8 @@ def show_menu():
     print("2. Find a record by name")
     print("3. Edit a record")
     print("4. Delete a record")
-    print("5. Exit")
+    print("5. Clear the screen")
+    print("6. Exit")
 
     option = input("Enter an option: ")
     return option
@@ -114,6 +116,9 @@ def edit_record():
 
     doc = get_record()
     if doc:
+        # create update_doc, we will add values to this dictionary
+        # While iterating over the key value pairs of the selected
+        # Record
         update_doc = {}
         print("")
         # for each key,value pair
@@ -143,6 +148,43 @@ def edit_record():
             print("Error accessing the database")
 
 
+def del_record():
+    doc = get_record()
+    if doc:
+        print("")
+        for key, value in doc.items():
+            if key != "_id":
+                print(key.capitalize() + ": " + value.capitalize())
+
+        print("")
+        confirmation = input("Are you sure this is the record you want to delete?\nY/N > ")
+        print("")
+
+        if confirmation.lower() == "y":
+            try:
+                coll.remove(doc)
+                print("*"*50)
+                print("The requested document has been deleted")
+                print("*"*50)
+            except:
+                print("There was an error accessing the database, please try again.")
+        else:
+            print("The document was NOT deleted")
+
+
+def clear(): 
+  
+    # Function to clear the screen
+
+    # for windows 
+    if name == 'nt': 
+        _ = system('cls') 
+  
+    # for mac and linux(here, os.name is 'posix') 
+    else: 
+        _ = system('clear') 
+
+
 def main_loop():
 
     # MAIN LOOP-
@@ -158,8 +200,10 @@ def main_loop():
         elif option == "3":
             edit_record()
         elif option == "4":
-            print("You have selected option 4")
+            del_record()
         elif option == "5":
+            _ = system('clear')
+        elif option == "6":
             conn.close()
             break
         else:
