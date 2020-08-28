@@ -202,7 +202,7 @@ def main_loop():
         elif option == "4":
             del_record()
         elif option == "5":
-            _ = system('clear')
+            clear()
         elif option == "6":
             conn.close()
             break
